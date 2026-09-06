@@ -1,0 +1,9 @@
+Restore outline:
+1. Install compatible sing-box and Caddy packages.
+2. Stop sing-box and Caddy.
+3. Extract current-stable-config.tar.gz at filesystem root as root.
+4. Restore ownership/permissions if account IDs differ.
+5. Validate sing-box, Caddy, SSH, and iptables configurations.
+6. Run systemctl daemon-reload and netfilter-persistent reload.
+7. Enable and restart sing-box, Caddy, SSH socket, and certificate timer.
+8. Validate listeners, subscription HTTP status, and clients before ending maintenance.
