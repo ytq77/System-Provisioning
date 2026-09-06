@@ -6,7 +6,7 @@ services:
     restart: always
     network_mode: "host"
     environment:
-      - PORT=12861
+      - PORT=${UPTIME_KUMA_PORT}
     volumes:
       - ./data/uptime-kuma:/app/data
     # 说明：
@@ -21,7 +21,7 @@ services:
     volumes:
       - ./data/filecodebox:/app/data
     ports:
-      - "tailscale_ip:26861:12345"
+      - "${TAILSCALE_IP}:${FILECODEBOX_PORT}:12345"
 
   # 3. Excalidraw
   excalidraw:
@@ -29,7 +29,7 @@ services:
     container_name: excalidraw
     restart: always
     ports:
-      - "tailscale_ip:23971:80"
+      - "${TAILSCALE_IP}:${EXCALIDRAW_PORT}:80"
 
   # 4. Sun-Panel（唯一全监听入口）
   sun-panel:
@@ -37,7 +37,7 @@ services:
     container_name: sun-panel
     restart: always
     ports:
-      - "80:3002"
+      - "${SUN_PANEL_PORT}:3002"
     volumes:
       - ./data/sun-panel/conf:/app/conf
       - ./data/sun-panel/uploads:/app/uploads
@@ -55,7 +55,7 @@ services:
       - /proc:/proc:ro
       - ./data/kula:/app/data
     environment:
-      - KULA_PORT=61208
+      - KULA_PORT=${KULA_PORT}
 
   # 6. SyncTV
   synctv:
@@ -63,7 +63,7 @@ services:
     container_name: synctv
     restart: always
     ports:
-      - "tailscale_ip:23862:8080"
+      - "${TAILSCALE_IP}:${SYNCTV_PORT}:8080"
     volumes:
       - ./data/synctv:/app/data
 
@@ -75,7 +75,7 @@ services:
   #   volumes:
   #     - './data/alist:/opt/alist/data'
   #   ports:
-  #     - "tailscale_ip:5244:5244"
+  #     - "${TAILSCALE_IP}:5244:5244"
   #   environment:
   #     - PUID=0
   #     - PGID=0
@@ -85,11 +85,12 @@ services:
   webdav:
     image: bytemark/webdav
     container_name: webdav
+    restart: always
     environment:
-      - AUTH_TYPE=Basic
-      - USERNAME=xxx      # 替换成你的用户名
-      - PASSWORD=xxx  # 替换成你的密码
+      - AUTH_TYPE=${WEBDAV_AUTH_TYPE}
+      - USERNAME=${WEBDAV_USERNAME}
+      - PASSWORD=${WEBDAV_PASSWORD}
     ports:
-      - 22263:80
+      - "${WEBDAV_PORT}:80"
     volumes:
       - ./data/webdav:/var/lib/dav

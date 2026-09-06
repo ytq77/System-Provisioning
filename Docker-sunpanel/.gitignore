@@ -1,0 +1,7 @@
+# 本机真实环境变量文件，可能包含密码、Token、真实 IP，不提交
+.env
+.env.*
+!.env.example
+
+# Docker 服务运行数据，不提交
+data/
