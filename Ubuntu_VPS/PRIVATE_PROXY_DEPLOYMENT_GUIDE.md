@@ -450,7 +450,31 @@ sysctl --system
 sysctl net.core.rmem_max net.core.wmem_max
 ```
 
-不要因为“网上教程推荐”就盲目切换 BBR、修改 MTU 或增加大量 TCP 参数。先用实际运营商网络做 A/B 测试；如果当前线路已经达到接入带宽，保持内核默认拥塞控制通常更稳定。
+不要因为“网上教程推荐”就盲目切换 BBR、修改 MTU 或增加大量 TCP 参数。应先用实际运营商网络做 A/B 测试。只有确认 TCP 节点的吞吐、首包或拥塞恢复得到改善，并且没有引入额外抖动时，才将 BBR 纳入稳定配置。
+
+如果决定长期使用 BBR，创建 `/etc/sysctl.d/99-bbr.conf`：
+
+```text
+net.core.default_qdisc=fq
+net.ipv4.tcp_congestion_control=bbr
+```
+
+创建 `/etc/modules-load.d/tcp_bbr.conf`：
+
+```text
+tcp_bbr
+```
+
+加载并验证：
+
+```bash
+modprobe tcp_bbr
+sysctl --system
+sysctl net.core.default_qdisc net.ipv4.tcp_congestion_control
+lsmod | grep '^tcp_bbr'
+```
+
+重启后必须重复以上检查。Linux TCP BBR 作用于 AnyTLS、VLESS 等 TCP 入站；Hysteria2 使用 UDP/QUIC，不直接使用该 TCP 拥塞控制器。
 
 ## 12. VPS 本机防火墙
 
@@ -834,6 +858,8 @@ systemctl list-timers --all | grep proxy-cert-check
 /etc/iptables/rules.v4
 /etc/iptables/rules.v6
 /etc/sysctl.d/90-hysteria2.conf
+/etc/sysctl.d/99-bbr.conf
+/etc/modules-load.d/tcp_bbr.conf
 /etc/ssh/sshd_config.d/00-local-hardening.conf
 /etc/systemd/system/sing-box.service.d/
 /etc/systemd/system/caddy.service.d/
@@ -858,7 +884,7 @@ sha256sum current-stable-config.tar.gz MANIFEST.txt RESTORE.txt FILES.txt >SHA25
 sha256sum -c SHA256SUMS
 ```
 
-只有新归档验证成功，才替换上一份 `current-stable`。不要使用未校验的宽泛通配符删除 `/etc`、`/var` 或用户目录。
+只有新归档验证成功，才替换上一份 `current-stable`。推荐先在同一备份根目录创建暂存目录，校验完成后将旧目录改名、把新目录原子改名为 `current-stable`，再次验证后再删除精确确认的旧目录。不要使用未校验的宽泛通配符删除 `/etc`、`/var` 或用户目录。
 
 同机备份只能防止误改配置，不能防止 VPS 磁盘或账号丢失。需要灾难恢复时，应把稳定归档加密后保存一份离线副本；不要上传明文私钥归档到公开 Git 仓库或网盘分享链接。
 
@@ -1045,4 +1071,5 @@ Caddy/443 与三个代理入站是独立服务。订阅返回 200 只能证明 C
 - rpcbind/NFS RPC 在不使用时关闭。
 - 证书到期检查定时器启用。
 - 配置、监听、日志、订阅及三个客户端节点全部通过验证。
+- 如果启用了 BBR，`bbr`、`fq`、内核模块和两份持久化配置均在重启后通过验证。
 - 当前稳定归档通过 SHA-256 校验，并妥善保护其中的私钥和密码。

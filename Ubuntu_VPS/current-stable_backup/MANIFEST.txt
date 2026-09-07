@@ -1,6 +1,6 @@
 Stable deployment backup
 Contains credentials and private keys; keep root-only.
-Created-UTC: 2026-09-06T10:09:05Z
+Created-UTC: 2026-09-07T13:16:02Z
 OS: Ubuntu 24.04.4 LTS
 Kernel: 6.17.0-1020-oracle
 sing-box: sing-box version 1.14.0
@@ -9,4 +9,5 @@ Inbounds: AnyTLS/TCP 8443, VLESS-REALITY/TCP 20963, Hysteria2/UDP 20963
 Subscription service: Caddy/TCP 80 and 443
 SSH: public-key ubuntu account with sudo; direct root login disabled
 IPv6 input policy: DROP
-Archive entries: 40
+TCP congestion control: BBR with fq
+Archive entries: 42
