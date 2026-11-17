@@ -1,0 +1,28 @@
+<div class="card" id="stream-routing-card">
+  <div class="card-title">推流方式 <span class="badge" id="routing-mode-badge" style="margin-left:auto">读取中</span></div>
+  <p style="font-size:.82rem;color:#8b949e;margin-bottom:12px">PS5 画面先进入本机。选择由本机直接转推，或交给 OBS 添加场景后推流。</p>
+  <form id="routing-form">
+    <fieldset style="border:0;padding:0;margin:0 0 14px;display:flex;flex-wrap:wrap;gap:18px">
+      <legend style="position:absolute;left:-9999px">选择推流方式</legend>
+      <label style="cursor:pointer"><input type="radio" name="stream-mode" value="obs" checked> OBS 接管</label>
+      <label style="cursor:pointer"><input type="radio" name="stream-mode" value="direct"> 直接转推 B 站</label>
+    </fieldset>
+    <div id="routing-direct-fields" class="form-group" hidden>
+      <label for="routing-destination">完整推流地址（服务器地址 + 推流码）</label>
+      <input id="routing-destination" type="password" autocomplete="off" spellcheck="false" placeholder="rtmp://服务器/live-bvc/推流码?参数">
+      <p id="routing-saved-hint" style="font-size:.76rem;color:#8b949e;margin-top:6px">首次直推需要填写地址。</p>
+    </div>
+    <p style="font-size:.78rem;color:#d29922;margin-bottom:12px">切到 OBS 会停止本机直推；OBS 中仍需手动点击“开始直播”。切回直推前，请先停止 OBS 推流，避免争用同一直播间。</p>
+    <button type="submit" id="routing-save" class="btn btn-primary" disabled>保存并应用</button>
+  </form>
+  <p id="routing-status" role="status" aria-live="polite" style="font-size:.82rem;margin:12px 0;color:#8b949e">正在读取当前模式…</p>
+  <div style="border-top:1px solid #30363d;padding-top:12px">
+    <label for="routing-obs-url" style="font-size:.8rem">OBS 媒体源地址</label>
+    <div style="display:flex;gap:8px;margin-top:6px">
+      <input id="routing-obs-url" readonly placeholder="等待 PS5 开播后自动生成" style="flex:1;min-width:0;padding:9px;background:#0d1117;color:#c9d1d9;border:1px solid #30363d;border-radius:6px">
+      <button type="button" id="routing-copy" class="btn btn-secondary btn-sm" disabled>复制地址</button>
+    </div>
+    <p style="font-size:.76rem;color:#8b949e;margin-top:8px">OBS → 来源 → 媒体源 → 取消“本地文件”→ 粘贴地址。OBS 在另一台电脑时，请用 Docker 电脑的局域网 IP 打开此面板再复制。B 站弹幕回显不受模式切换影响。</p>
+  </div>
+</div>
+<script src="/static/stream_routing.js" defer></script>
