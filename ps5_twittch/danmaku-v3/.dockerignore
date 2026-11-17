@@ -1,0 +1,7 @@
+data/
+logs/
+debug_output/
+tests/
+__pycache__/
+*.pyc
+.env

@@ -1,0 +1,19 @@
+{
+    "WEB_PORT": 5000,
+    "BILIBILI_ROOM_ID": "B站房间号",
+    "TWITCH_CHANNEL": "Twitch频道名",
+    "IRC_HOST": "0.0.0.0",
+    "IRC_PORT": 17667,
+    "MAX_SEEN_DANMAKU": 1000,
+    "MAX_SEEN_GIFT": 500,
+    "HEARTBEAT_TIMEOUT": 300,
+    "USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "ENABLE_GIFT": true,
+    "MAX_LOG_ITEMS": 50,
+    "BILIBILI_SESSDATA": "",
+    "BILIBILI_BILI_JCT": "",
+    "BILIBILI_UID": 0,
+    "BILIBILI_UNAME": "",
+    "RECONNECT_DELAY": 5,
+    "ROOM_HISTORY": []
+}

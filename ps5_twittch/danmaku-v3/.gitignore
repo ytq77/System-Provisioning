@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+logs/
+debug_output/
+.env
+data/bili_cookies.json
+data/routing/*.json
+data/routing/*.tmp
